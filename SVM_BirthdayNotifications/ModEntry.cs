@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ namespace SVM_BirthdayNotifications
     /// <summary>The mod entry point.</summary>
     internal sealed class ModEntry : Mod
     {
+        public ModConfig config;
         /*********
         ** Public methods
         *********/
@@ -23,6 +25,7 @@ namespace SVM_BirthdayNotifications
         public override void Entry(IModHelper helper)
         {
             helper.Events.GameLoop.DayStarted += OnDayStarted;
+            this.config = this.Helper.ReadConfig<ModConfig>();
         }
 
 
@@ -35,9 +38,14 @@ namespace SVM_BirthdayNotifications
         private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             NPC BirthdayChild = Utility.getTodaysBirthdayNPC();
-            string DisplayName = BirthdayChild.Name[^1] == 's' ? BirthdayChild.Name : BirthdayChild.Name + 's';
-            string Pronoun = BirthdayChild.Gender == 0 ? "He" : "She";
-            Game1.addHUDMessage(new HUDMessage($"It's {DisplayName} birthday! {Pronoun} likes {BirthdayChild.getFavoriteItem().DisplayName}",HUDMessage.newQuest_type));
+
+            if (config.NotifyUnknownNPCs || Game1.player.hasPlayerTalkedToNPC(BirthdayChild.Name))
+            {
+                string DisplayName = BirthdayChild.Name[^1] == 's' ? BirthdayChild.Name : BirthdayChild.Name + 's';
+                string Pronoun = BirthdayChild.Gender == 0 ? "He" : "She";
+
+                Game1.addHUDMessage(new HUDMessage($"It's {DisplayName} birthday! {Pronoun} likes {BirthdayChild.getFavoriteItem().DisplayName}",HUDMessage.newQuest_type));
+            }
         }
     }
 }
