@@ -8,9 +8,8 @@ namespace SVM_BirthdayNotifications
     internal sealed class ModEntry : Mod
     {
         public ModConfig config;
-        /*********
-        ** Public methods
-        *********/
+
+
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
@@ -20,21 +19,12 @@ namespace SVM_BirthdayNotifications
         }
 
 
-        /*********
-        ** Private methods
-        *********/
         /// <summary>Raised after the day started.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
         private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             NPC BirthdayChild = Utility.getTodaysBirthdayNPC();
-
-            int friendshipHeartLevel = Game1.player.getFriendshipHeartLevelForNPC(BirthdayChild.Name);
-
-            //int friendshipLevel = Game1.player.getFriendshipLevelForNPC(BirthdayChild.Name);
-            //this.Monitor.Log($"{BirthdayChild.Name} Heart Level: {friendshipHeartLevel}", LogLevel.Info);
-            //this.Monitor.Log($"{BirthdayChild.Name} Heart Level: {friendshipLevel}", LogLevel.Info);
 
             if (DisplayNotification(BirthdayChild, config))
             {
