@@ -4,5 +4,6 @@
     {
         public bool NotifyUnknownNPCs = false;
         public bool RecommendGift = false;
+        public bool DatableNPCsOnly = false;
     }
 }

@@ -29,8 +29,7 @@ namespace SVM_BirthdayNotifications
         private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             NPC BirthdayChild = Utility.getTodaysBirthdayNPC();
-
-            if (config.NotifyUnknownNPCs || GameStateQuery.CheckConditions($"PLAYER_HAS_MET Current {BirthdayChild.Name}"))
+            if (DisplayNotification(BirthdayChild, config))
             {
                 string DisplayName = BirthdayChild.Name[^1] == 's' ? BirthdayChild.Name : BirthdayChild.Name + 's';
                 string Pronoun = BirthdayChild.Gender == 0 ? Helper.Translation.Get("pronoun.male") : Helper.Translation.Get("pronoun.female");
@@ -44,6 +43,18 @@ namespace SVM_BirthdayNotifications
 
                 Game1.addHUDMessage(new HUDMessage(Notification,HUDMessage.newQuest_type));
             }
+        }
+
+
+        /// <summary>Checks if the notification should be displayed.</summary>
+        /// <param name="npc">The NPC that has its birthday.</param>
+        /// <param name="config">The current active mod config.</param>
+        private static bool DisplayNotification(NPC npc, ModConfig config)
+        {
+            bool notifyIfKnown = config.NotifyUnknownNPCs || GameStateQuery.CheckConditions($"PLAYER_HAS_MET Current {npc.Name}");
+            bool notifyIfDatable = !config.DatableNPCsOnly || npc.GetData().CanBeRomanced;
+
+            return notifyIfKnown && notifyIfDatable;
         }
     }
 }
