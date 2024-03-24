@@ -42,7 +42,7 @@ namespace SVM_BirthdayNotifications
                 string Pronoun = BirthdayChild.Gender == 0 ? Helper.Translation.Get("pronoun.male") : Helper.Translation.Get("pronoun.female");
                 string _ = Helper.Translation.Get("notification-message.basic");
                 string Notification = _.Replace("{name}", DisplayName);
-                if (config.RecommendGift)
+                if (config.RecommendGift && config.MinimumFriendshipHeartLevelForGiftRecommendations <= Game1.player.getFriendshipHeartLevelForNPC(BirthdayChild.Name))
                 {
                     _ = Helper.Translation.Get("notification-message.recommend-gift");
                     Notification += _.Replace("{pronoun}",Pronoun).Replace("{gift}", BirthdayChild.getFavoriteItem().DisplayName);
@@ -54,15 +54,15 @@ namespace SVM_BirthdayNotifications
 
 
         /// <summary>Checks if the notification should be displayed.</summary>
-        /// <param name="npc">The NPC that has its birthday.</param>
+        /// <param name="BirthdayChild">The NPC that has its birthday.</param>
         /// <param name="config">The current active mod config.</param>
-        private static bool DisplayNotification(NPC npc, ModConfig config)
+        private static bool DisplayNotification(NPC BirthdayChild, ModConfig config)
         {
-            bool notifyIfKnown = config.NotifyUnknownNPCs || GameStateQuery.CheckConditions($"PLAYER_HAS_MET Current {npc.Name}");
-            bool notifyIfDatable = !config.DatableNPCsOnly || npc.GetData().CanBeRomanced;
-            int friendshipHeartLevel = Game1.player.getFriendshipHeartLevelForNPC(npc.Name);
+            bool notifyIfKnown = config.NotifyForUnknownNPCs || GameStateQuery.CheckConditions($"PLAYER_HAS_MET Current {BirthdayChild.Name}");
+            bool notifyIfDatable = !config.DatableNPCsOnly || BirthdayChild.GetData().CanBeRomanced;
+            int friendshipHeartLevel = Game1.player.getFriendshipHeartLevelForNPC(BirthdayChild.Name);
             
-            return notifyIfKnown && notifyIfDatable && !config.ExcludedNPCs.Contains(npc.Name) && (config.MinimumFriendshipHeartLevel <= friendshipHeartLevel);
+            return notifyIfKnown && notifyIfDatable && !config.ExcludedNPCs.Contains(BirthdayChild.Name) && (config.MinimumFriendshipHeartLevel <= friendshipHeartLevel);
         }
     }
 }
