@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using StardewModdingAPI;
+﻿using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
-using SVM_BirthdayNotifications;
 
 namespace SVM_BirthdayNotifications
 {
@@ -39,12 +30,19 @@ namespace SVM_BirthdayNotifications
         {
             NPC BirthdayChild = Utility.getTodaysBirthdayNPC();
 
-            if (config.NotifyUnknownNPCs || Game1.player.hasPlayerTalkedToNPC(BirthdayChild.Name))
+            if (config.NotifyUnknownNPCs || GameStateQuery.CheckConditions($"PLAYER_HAS_MET Current {BirthdayChild.Name}"))
             {
                 string DisplayName = BirthdayChild.Name[^1] == 's' ? BirthdayChild.Name : BirthdayChild.Name + 's';
-                string Pronoun = BirthdayChild.Gender == 0 ? "He" : "She";
+                string Pronoun = BirthdayChild.Gender == 0 ? Helper.Translation.Get("pronoun.male") : Helper.Translation.Get("pronoun.female");
+                string _ = Helper.Translation.Get("notification-message.basic");
+                string Notification = _.Replace("{name}", DisplayName);
+                if (config.RecommendGift)
+                {
+                    _ = Helper.Translation.Get("notification-message.recommend-gift");
+                    Notification += _.Replace("{pronoun}",Pronoun).Replace("{gift}", BirthdayChild.getFavoriteItem().DisplayName);
+                }
 
-                Game1.addHUDMessage(new HUDMessage($"It's {DisplayName} birthday! {Pronoun} likes {BirthdayChild.getFavoriteItem().DisplayName}",HUDMessage.newQuest_type));
+                Game1.addHUDMessage(new HUDMessage(Notification,HUDMessage.newQuest_type));
             }
         }
     }
