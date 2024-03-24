@@ -29,6 +29,13 @@ namespace SVM_BirthdayNotifications
         private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             NPC BirthdayChild = Utility.getTodaysBirthdayNPC();
+
+            int friendshipHeartLevel = Game1.player.getFriendshipHeartLevelForNPC(BirthdayChild.Name);
+
+            //int friendshipLevel = Game1.player.getFriendshipLevelForNPC(BirthdayChild.Name);
+            //this.Monitor.Log($"{BirthdayChild.Name} Heart Level: {friendshipHeartLevel}", LogLevel.Info);
+            //this.Monitor.Log($"{BirthdayChild.Name} Heart Level: {friendshipLevel}", LogLevel.Info);
+
             if (DisplayNotification(BirthdayChild, config))
             {
                 string DisplayName = BirthdayChild.Name[^1] == 's' ? BirthdayChild.Name : BirthdayChild.Name + 's';
@@ -53,8 +60,9 @@ namespace SVM_BirthdayNotifications
         {
             bool notifyIfKnown = config.NotifyUnknownNPCs || GameStateQuery.CheckConditions($"PLAYER_HAS_MET Current {npc.Name}");
             bool notifyIfDatable = !config.DatableNPCsOnly || npc.GetData().CanBeRomanced;
-
-            return notifyIfKnown && notifyIfDatable && !config.ExcludedNPCs.Contains(npc.Name);
+            int friendshipHeartLevel = Game1.player.getFriendshipHeartLevelForNPC(npc.Name);
+            
+            return notifyIfKnown && notifyIfDatable && !config.ExcludedNPCs.Contains(npc.Name) && (config.MinimumFriendshipHeartLevel <= friendshipHeartLevel);
         }
     }
 }
