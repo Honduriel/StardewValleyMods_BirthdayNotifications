@@ -1,7 +1,7 @@
 {
   "Name": "BirthdayNotifications",
   "Author": "Nhok",
-  "Version": "0.8.0",
+  "Version": "0.9.0",
   "Description": "Displays notifications about birthdays on wakeup",
   "UniqueID": "Nhok.SVM_BirthdayNotifications",
   "EntryDll": "SVM_BirthdayNotifications.dll",
