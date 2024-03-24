@@ -54,7 +54,7 @@ namespace SVM_BirthdayNotifications
             bool notifyIfKnown = config.NotifyUnknownNPCs || GameStateQuery.CheckConditions($"PLAYER_HAS_MET Current {npc.Name}");
             bool notifyIfDatable = !config.DatableNPCsOnly || npc.GetData().CanBeRomanced;
 
-            return notifyIfKnown && notifyIfDatable;
+            return notifyIfKnown && notifyIfDatable && !config.ExcludedNPCs.Contains(npc.Name);
         }
     }
 }
