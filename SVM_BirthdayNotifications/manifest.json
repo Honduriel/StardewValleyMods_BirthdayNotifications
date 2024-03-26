@@ -1,7 +1,7 @@
 {
   "Name": "BirthdayNotifications",
   "Author": "Honduriel",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Displays notifications about birthdays on wakeup",
   "UniqueID": "Honduriel.SVM_BirthdayNotifications",
   "EntryDll": "SVM_BirthdayNotifications.dll",
