@@ -26,7 +26,7 @@ namespace SVM_BirthdayNotifications
         {
             NPC BirthdayChild = Utility.getTodaysBirthdayNPC();
 
-            if (DisplayNotification(BirthdayChild, config))
+            if (null != BirthdayChild && DisplayNotification(BirthdayChild, config))
             {
                 string DisplayName = BirthdayChild.Name[^1] == 's' ? BirthdayChild.Name : BirthdayChild.Name + 's';
                 string Pronoun = BirthdayChild.Gender == 0 ? Helper.Translation.Get("pronoun.male") : Helper.Translation.Get("pronoun.female");
