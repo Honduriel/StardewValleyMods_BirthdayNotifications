@@ -3,6 +3,7 @@
     internal class ModConfig
     {
         public bool NotifyForUnknownNPCs = false;
+        public bool WriteNotificationToChat = false;
         public bool RecommendGift = true;
         public bool DatableNPCsOnly = false;
         public int MinimumFriendshipHeartLevel = 1;

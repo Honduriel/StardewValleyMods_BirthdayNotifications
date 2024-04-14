@@ -1,5 +1,6 @@
 {
   "NotifyForUnknownNPCs": false,
+  "WriteNotificationToChat": false,
   "RecommendGift": true,
   "DatableNPCsOnly": false,
   "MinimumFriendshipHeartLevel": 1,

@@ -24,6 +24,7 @@ namespace SVM_BirthdayNotifications
         /// <param name="e">The event data.</param>
         private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
+
             NPC BirthdayChild = Utility.getTodaysBirthdayNPC();
 
             if (null != BirthdayChild && DisplayNotification(BirthdayChild, config))
@@ -39,6 +40,9 @@ namespace SVM_BirthdayNotifications
                 }
 
                 Game1.addHUDMessage(new HUDMessage(Notification,HUDMessage.newQuest_type));
+                
+                if (config.WriteNotificationToChat)
+                    Game1.chatBox.addInfoMessage(Notification);
             }
         }
 
